@@ -1,19 +1,43 @@
+import com.thoughtworks.kotlin_basic.util.ColumnLabelGenerator
 import com.thoughtworks.kotlin_basic.util.PrintUtil
 
 fun main(args: Array<String>) {
-    println("Hello World!")
-    println("Program arguments: ${args.joinToString()}")
+    val generator = ColumnLabelGenerator()
 
-    val printUtil = PrintUtil()
-    // Try adding program arguments via Run/Debug configuration.
-    // Learn more about running applications: https://www.jetbrains.com/help/idea/running-applications.html.
+    while (true) {
+        println("Enter the starting sequence number (or type 'end' to quit):")
+        val startInput = readLine()
+        if (startInput.equals("end", ignoreCase = true)) {
+            println("Program terminated.")
+            break
+        }
 
-    val headers = listOf("ID", "Name", "Occupation")
-    val rows = listOf(
-        listOf("1", "Alice", "Software Engineer"),
-        listOf("2", "Bob", "Data Scientist"),
-        listOf("3", "Charlie", "Product Manager")
-    )
+        val start = startInput?.toIntOrNull()
+        if (start == null || start <= 0) {
+            println("Invalid input. Please enter a valid number greater than zero.")
+            continue
+        }
 
-    printUtil.printTable(headers, rows)
+        println("Enter the number of results (or type 'end' to quit):")
+        val countInput = readLine()
+        if (countInput.equals("end", ignoreCase = true)) {
+            println("Program terminated.")
+            break
+        }
+
+        val count = countInput?.toIntOrNull()
+        if (count == null || count <= 0) {
+            println("Invalid input. Please enter a valid number greater than zero.")
+            continue
+        }
+
+        try {
+            val result = generator.generateColumnLabels(start, count)
+            println("Column labels starting from $start for $count results:")
+            println(result.joinToString(prefix = "[", postfix = "]"))
+        } catch (e: IllegalArgumentException) {
+            println("Error: ${e.message}")
+        }
+    }
 }
+
